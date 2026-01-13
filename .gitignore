@@ -1,0 +1,17 @@
+# Seguridad (Ignorar claves)
+.env
+.env.local
+
+# Archivos temporales de Python
+__pycache__/
+*.pyc
+
+# Carpetas de datos generados
+logs/
+replays/
+results/
+match_records/
+
+# Sistema y VS Code
+.DS_Store
+.vscode/

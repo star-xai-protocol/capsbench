@@ -1,0 +1,29 @@
+services:
+  # 🟢 EL JUEZ (Servidor)
+  green-agent:
+    build:
+      context: .
+      dockerfile: Dockerfile.green
+    ports:
+      - "5000:5000"
+    volumes:
+      # Mapea las carpetas para que los resultados aparezcan en tu Mac
+      - ./replays:/app/replays
+      - ./logs:/app/logs
+      - ./results:/app/results
+      - ./match_records:/app/match_records
+
+  # 🟣 EL JUGADOR (Cliente)
+  purple-agent:
+    build:
+      context: .
+      dockerfile: Dockerfile.purple
+    environment:
+      # Pasa tu API Key local al contenedor
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      # Le dice al agente dónde está el servidor (nombre del servicio Docker)
+      - SERVER_URL=http://green-agent:5000
+    depends_on:
+      - green-agent
+    # Si falla al conectar, reintenta (útil mientras el servidor arranca)
+    restart: on-failure
