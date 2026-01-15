@@ -34,6 +34,14 @@ AAA -> Agentified Agent Assessment
 
 import logging
 import os
+import sys
+import re
+from datetime import datetime, timezone
+import json
+import shutil
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+
 
 # --- PARCHE DE EMERGENCIA (EL "GPS") ---
 # Esto añade la carpeta actual (src/capsbench) a la lista de sitios donde Python busca.
@@ -42,14 +50,6 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 if current_dir not in sys.path:
     sys.path.append(current_dir)
 # ---------------------------------------
-
-import sys
-import re
-from datetime import datetime, timezone
-import json
-import shutil
-from flask import Flask, request, jsonify
-from flask_cors import CORS
 
 # Import Gymnasium Wrapper
 try:
