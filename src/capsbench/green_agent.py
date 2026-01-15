@@ -44,7 +44,7 @@ from flask_cors import CORS
 
 # Import Gymnasium Wrapper
 try:
-    from .capsicaps_env import CapsiCapsEnv
+    from capsicaps_env import CapsiCapsEnv # antes .capsicaps_env
 except ImportError as e:
     print(f"CRITICAL ERROR: Could not import 'capsicaps_env'. Detail: {e}")
     exit(1)
