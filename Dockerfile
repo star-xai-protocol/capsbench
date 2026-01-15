@@ -22,7 +22,7 @@ EXPOSE 5000
 
 # 6. Ejecución dividida (Evita el error de "--host")
 # ENTRYPOINT define el comando que NUNCA cambia
-ENTRYPOINT ["python", "-m", "src.capsbench.green_agent"]
+ENTRYPOINT ["python3", "-m", "src.capsbench.green_agent"]
 # CMD define los argumentos que el Leaderboard puede sobrescribir
 CMD ["--host", "0.0.0.0", "--port", "5000"]
 
