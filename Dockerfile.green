@@ -29,4 +29,5 @@ EXPOSE 5000
 
 # 8. Define the command to run the application
 # We use the module syntax (-m) to execute the green_agent script inside the package.
-ENTRYPOINT ["python3", "-m", "src.capsbench.green_agent"]
+# ENTRYPOINT ["python3", "-m", "src.capsbench.green_agent"]
+ENTRYPOINT ["python3", "-m", "src.capsbench.main"]
