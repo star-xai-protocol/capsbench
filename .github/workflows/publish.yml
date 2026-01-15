@@ -30,6 +30,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: Dockerfile.green  # <--- IMPORTANTE: Apunta a tu archivo específico
+          file: Dockerfile  # <--- IMPORTANTE: Apunta a tu archivo específico
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest, ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.event.release.tag_name }}
