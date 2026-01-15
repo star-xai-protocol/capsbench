@@ -35,11 +35,13 @@ AAA -> Agentified Agent Assessment
 import logging
 import os
 
-# --- PARCHE DE EMERGENCIA PARA IMPORTS ---
-# Esto añade la carpeta actual al sistema para que encuentre capsicaps_env sin puntos
+# --- PARCHE DE EMERGENCIA (EL "GPS") ---
+# Esto añade la carpeta actual (src/capsbench) a la lista de sitios donde Python busca.
+# Así funciona SIEMPRE, con punto o sin punto.
 current_dir = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(current_dir)
-# -----------------------------------------
+if current_dir not in sys.path:
+    sys.path.append(current_dir)
+# ---------------------------------------
 
 import sys
 import re
