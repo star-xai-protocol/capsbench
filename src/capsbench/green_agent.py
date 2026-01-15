@@ -34,6 +34,13 @@ AAA -> Agentified Agent Assessment
 
 import logging
 import os
+
+# --- PARCHE DE EMERGENCIA PARA IMPORTS ---
+# Esto añade la carpeta actual al sistema para que encuentre capsicaps_env sin puntos
+current_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(current_dir)
+# -----------------------------------------
+
 import sys
 import re
 from datetime import datetime, timezone
