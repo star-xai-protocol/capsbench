@@ -43,13 +43,20 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 
-# --- PARCHE DE EMERGENCIA (EL "GPS") ---
-# Esto añade la carpeta actual (src/capsbench) a la lista de sitios donde Python busca.
-# Así funciona SIEMPRE, con punto o sin punto.
+# --- PARCHE DE EMERGENCIA (GPS TOTAL) ---
+# 1. Obtiene la ruta de este archivo (src/capsbench/green_agent.py)
 current_dir = os.path.dirname(os.path.abspath(__file__))
-if current_dir not in sys.path:
-    sys.path.append(current_dir)
-# ---------------------------------------
+# 2. Obtiene la ruta padre (src/)
+parent_dir = os.path.dirname(current_dir)
+# 3. Obtiene la raíz del proyecto
+root_dir = os.path.dirname(parent_dir)
+
+# 4. AÑADIMOS TODO AL PATH para que Python encuentre los archivos sí o sí
+sys.path.append(current_dir) # Para encontrar capsicaps_env.py
+sys.path.append(parent_dir)  # Para encontrar paquetes hermanos
+sys.path.append(root_dir)    # Para encontrar configs en raiz
+
+# --- FIN DEL PARCHE ---
 
 # Import Gymnasium Wrapper
 try:
