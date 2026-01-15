@@ -10,7 +10,15 @@ WORKDIR /app
 
 # 3. Instalación de dependencias
 COPY pyproject.toml README.md LICENSE ./
-RUN pip install --no-cache-dir .
+# 3. INSTALACIÓN MANUAL (Para evitar errores de 'hatchling' o README)
+RUN pip install --no-cache-dir \
+    flask>=3.0.0 \
+    flask-cors>=4.0.0 \
+    gymnasium>=0.29.0 \
+    numpy>=1.26.0 \
+    requests>=2.31.0 \
+    python-dotenv>=1.0.0 \
+    google-genai>=0.3.0
 
 # 4. Copia de código y creación de carpetas
 COPY src/ src/
