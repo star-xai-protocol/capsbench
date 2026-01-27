@@ -20,10 +20,12 @@ def generate_compose(scenario_path):
     compose["services"]["green-agent"] = {
         "image": "ghcr.io/star-xai-protocol/capsbench:latest", 
         "ports": ["9009:9009"],
+        # IMPORTANTE: Forzamos la ejecución como MÓDULO (-m) para arreglar el import error
+        "command": ["python", "-m", "capsbench.green_agent"],
         "environment": {
             "RECORD_MODE": "true",
-            "PYTHONUNBUFFERED": "1",  # Para ver los logs al instante
-            "PYTHONPATH": "/app/src"  # <--- ¡LA SOLUCIÓN! Le dice dónde están los módulos
+            "PYTHONUNBUFFERED": "1",
+            "PYTHONPATH": "/app/src" # Le dice a Python dónde buscar el módulo
         },
         "volumes": [
             "./replays:/app/src/replays",
@@ -32,7 +34,7 @@ def generate_compose(scenario_path):
         ],
         "healthcheck": {
             "test": ["CMD", "curl", "-f", "http://localhost:9009/status"],
-            "interval": "5s", 
+            "interval": "5s",
             "timeout": "5s",
             "retries": 20,
             "start_period": "5s"
