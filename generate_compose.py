@@ -18,18 +18,18 @@ def generate_compose(scenario_path):
 
     # 1. Configurar GREEN AGENT (Servidor Oficial)
     compose["services"]["green-agent"] = {
-        # Usamos la imagen oficial (EL PAQUETE SÍ EXISTE EN LA NUBE)
+        # Usamos la imagen oficial de la nube (QUE SÍ EXISTE)
         "image": "ghcr.io/star-xai-protocol/capsbench:latest", 
         "ports": ["9009:9009"],
         
-        # --- LIMPIEZA TOTAL ---
-        # NO ponemos 'command' ni 'entrypoint'.
-        # Dejamos que la imagen use su configuración de fábrica (CMD por defecto).
+        # --- ¡IMPORTANTE! ---
+        # NO AGREGUES 'command' NI 'entrypoint'.
+        # Borra cualquier línea que diga "echo DOCKER ESTA VIVO" o similar.
+        # Deja que la imagen use su configuración de fábrica.
         
         "environment": {
             "RECORD_MODE": "true",
             "PYTHONUNBUFFERED": "1"
-            # Quitamos PYTHONPATH, dejamos que la imagen use el suyo.
         },
         "volumes": [
             "./replays:/app/src/replays",
