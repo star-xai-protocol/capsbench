@@ -1,0 +1,20 @@
+name: Inspect Official Image
+
+on: workflow_dispatch
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pull Image
+        run: docker pull ghcr.io/star-xai-protocol/capsbench:latest
+
+      - name: 🔍 REVELAR CONFIGURACIÓN (Entrypoint y CMD)
+        run: docker inspect ghcr.io/star-xai-protocol/capsbench:latest | grep -A 20 "Config"
+
+      - name: 📂 VER ESTRUCTURA DE ARCHIVOS
+        # Listamos recursivamente para ver dónde demonios está todo
+        run: docker run --rm --entrypoint /bin/sh ghcr.io/star-xai-protocol/capsbench:latest -c "ls -R /app/src"
+
+      - name: 🐍 VERIFICAR VERSIÓN Y PATH
+        run: docker run --rm --entrypoint /bin/sh ghcr.io/star-xai-protocol/capsbench:latest -c "python --version && echo $PYTHONPATH"
