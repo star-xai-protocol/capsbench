@@ -29,6 +29,18 @@ jobs:
       - name: Generate docker-compose.yml
         run: python generate_compose.py --scenario scenario.toml
 
+      # 👇 AÑADE ESTO AQUÍ 👇
+      - name: 🕵️‍♂️ DETECTOR DE MENTIRAS - Ver código real
+        run: |
+          echo "============================================="
+          echo "🔎 CONTENIDO REAL DE generate_compose.py EN GITHUB:"
+          cat generate_compose.py
+          echo "============================================="
+          echo "📝 CONTENIDO GENERADO EN docker-compose.yml:"
+          cat docker-compose.yml
+          echo "============================================="
+      # ☝️ HASTA AQUÍ ☝️
+
       - name: Create directories
         run: mkdir -p replays logs results output
 
