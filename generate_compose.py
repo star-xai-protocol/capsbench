@@ -17,25 +17,25 @@ def generate_compose(scenario_path):
     }
 
     # 1. Configurar GREEN AGENT (Servidor)
-    # Usamos la imagen oficial que definiste en la web
     compose["services"]["green-agent"] = {
         "image": "ghcr.io/star-xai-protocol/capsbench:latest", 
         "ports": ["9009:9009"],
         "environment": {
-            "RECORD_MODE": "true"
+            "RECORD_MODE": "true",
+            "PYTHONUNBUFFERED": "1",  # Para ver los logs al instante
+            "PYTHONPATH": "/app/src"  # <--- ¡LA SOLUCIÓN! Le dice dónde están los módulos
         },
         "volumes": [
-            # AQUÍ ESTÁ EL TRUCO: Mapeamos a /app/src/ para que coincida con el servidor
             "./replays:/app/src/replays",
             "./logs:/app/src/logs",
             "./results:/app/src/results"
         ],
         "healthcheck": {
             "test": ["CMD", "curl", "-f", "http://localhost:9009/status"],
-            "interval": "2s",
+            "interval": "5s", 
             "timeout": "5s",
             "retries": 20,
-            "start_period": "2s"
+            "start_period": "5s"
         },
         "networks": ["agent-network"]
     }
