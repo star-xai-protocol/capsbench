@@ -1,0 +1,53 @@
+name: Run Scenario
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  run-game:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      # Instalamos lo que pusiste en requirements.txt
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      # Generamos el docker-compose usando el script del paso 2
+      - name: Generate docker-compose.yml
+        run: python generate_compose.py --scenario scenario.toml
+
+      - name: Create directories
+        run: mkdir -p replays logs results output
+
+      # JUGAMOS LA PARTIDA
+      - name: Run Game with Docker
+        env:
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+        run: |
+          docker compose up --build --abort-on-container-exit --exit-code-from agentbeats-client
+
+      # GUARDAMOS LOS RESULTADOS (Replays y Logs)
+      - name: Upload Logs and Replays
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: game-replays-logs
+          path: |
+            replays/
+            logs/
+            results/
+            output/
+          retention-days: 5
