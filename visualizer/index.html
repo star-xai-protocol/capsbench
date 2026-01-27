@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caps i Caps - Visualizer v2.3</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* --- VISUALIZER STYLES (Theme Update) --- */
+        :root {
+            /* Interface Colors (Warm Orange) */
+            --warm-orange-border: #ef6c00;    
+            --warm-orange-btn: #ff9800;       
+            --warm-orange-hover: #f57c00;     
+            
+            /* Game Colors (Original Cyan Restored) */
+            --cyan-base: #00e5ff; /* Bright electric blue */
+        }
+
+        /* 1. REPLAY PANEL */
+        #replay-controls-box {
+            border: 2px solid var(--warm-orange-border) !important;
+            background-color: #fff3e0 !important;
+        }
+        #replay-controls-box h2 {
+            color: #e65100 !important;
+        }
+
+        /* 2. TEXT BUTTONS (ADJUSTED TO FIT) */
+        #replay-controls-box button.btn-text {
+            background-color: var(--warm-orange-btn) !important;
+            border: 1px solid var(--warm-orange-border) !important;
+            color: rgb(20, 19, 19) !important;
+            font-weight: bold;
+            
+            /* Respect Case (Uppercase/Lowercase) */
+            text-transform: none; 
+            
+            /* CENTERING AND DISTRIBUTION */
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+
+            /* SIZE ADJUSTMENT (To fit all 4) */
+            font-size: 0.85em;   /* Slightly smaller font */
+            padding: 6px 2px;    /* Less side padding */
+            flex: 1;             /* MAGIC: Space distributed equally */
+            min-width: 0;        /* Prevents overflow if text is long */
+            
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        #replay-controls-box button.btn-text:hover {
+            background-color: var(--warm-orange-hover) !important;
+            transform: translateY(-1px);
+        }
+
+        /* ADD THIS: Color for 'Load Selected' button */
+        #btn-load-replay {
+            color: rgb(20, 19, 19) !important; /* The same dark gray */
+            font-weight: bold;
+        }
+
+        /* 3. BASE INDICATORS (Electric Cyan) */
+        .cyan-dot {
+            color: var(--cyan-base) !important; 
+        }
+        .base-indicator {
+            background-color: var(--cyan-base) !important;
+            box-shadow: 0 0 8px var(--cyan-base) !important;
+        }
+
+        /* Button bar layout */
+        .replay-toolbar {
+            display: flex; 
+            gap: 4px; /* Less space between buttons (previously 10px) */
+            justify-content: space-between; /* Occupy full width */
+            margin-top: 15px; 
+            margin-bottom: 10px;
+            width: 100%; /* Ensure it uses parent width */
+        }
+
+        /* --- FIX: STABLE RESCUED MICE --- */
+        /* Overwrite animation to prevent flickering at 200ms */
+        .rescued-anim {
+            animation: none !important;       /* Disable movement */
+            transition: none !important;      /* Disable transitions */
+            
+            /* Fixed Success Style */
+            background-color: #4caf50 !important; /* Bright Green */
+            color: white !important;
+            border: 2px solid #2e7d32 !important; /* Dark green border */
+            box-shadow: 0 0 8px #4caf50 !important; /* Glow */
+            
+            /* Slightly larger to stand out, but FIXED */
+            transform: scale(1.1) !important; 
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        
+        <div class="status-panel">
+            <h1>Caps i Caps</h1>
+            
+            <div style="margin-bottom: 15px; text-align: center; border-bottom: 1px solid #ccc; padding-bottom: 10px;">
+                <label for="server-ip-config" style="color: #333; font-weight:bold; font-size: 0.9em;">Server IP: </label>
+                <input type="text" id="server-ip-config" value="http://localhost:9009" 
+                       style="padding: 4px; border: 1px solid #999; background: #fff; color: #000; border-radius: 4px; width: 180px; text-align: center;">
+            </div>
+
+            <div class="status-box game-info">
+                <h2>Game Status</h2>
+                <p><strong>Level:</strong> <span id="level-indicator">-</span></p>
+                <p>Turn: <span id="turn-count">-</span> / <span id="max-moves">-</span></p>
+                <p>Rescued: <span id="rescued-count">-</span></p>
+                <p>Phase: <span id="game-phase" class="phase-indicator">-</span></p>
+                
+                <div class="score-container">
+                    <p>Current Score: <span id="raw-score">0</span></p>
+                    <p id="final-score-row" class="hidden">
+                        🏆 Final Benchmark: <span id="benchmark-score" class="highlight-score">0</span>
+                        <br>
+                        <span style="font-size:0.8em; color:#666;">(Completion: <span id="completion-percent">0</span>%)</span>
+                    </p>
+                </div>
+                <p id="game-over-msg" class="hidden"></p>
+            </div>
+
+            <div class="status-box inventory">
+                <h2>Inventory</h2>
+                <div class="inv-item">G1: <span id="inv-G1">-</span></div>
+                <div class="inv-item">G2: <span id="inv-G2">-</span></div>
+                <div class="inv-item">G3: <span id="inv-G3">-</span></div>
+                <div class="inv-item">G4: <span id="inv-G4">-</span></div>
+            </div>
+
+            <div class="status-box mice-tracker">
+                <h2>Mice Status</h2>
+                <ul id="mice-list"></ul>
+            </div>
+            
+            <div class="status-box history-box">
+                <h2>Match History</h2>
+                <div id="history-log" class="history-log">
+                    <div class="empty-history">No moves yet.</div>
+                </div>
+                <button onclick="downloadHistory()" class="btn-download">💾 Download Match Record</button>
+            </div>
+            
+            <div id="replay-controls-box" class="status-box controls" style="display: none;">
+                <h2>📼 Replay Mode</h2>
+                
+                <div class="control-group">
+                    <label>Select Recording:</label>
+                    <select id="replay-file-selector" style="width: 100%; padding: 5px; margin-bottom: 5px;"></select>
+                    <button id="btn-load-replay" class="btn-start" style="background-color: #ff9800;">📂 Load Selected</button>
+                </div>
+
+                <hr class="separator" style="border-color: #ffe0b2;">
+
+                <div class="replay-toolbar">
+                    <button onclick="sendReplayCmd('prev')" class="btn-send btn-text" title="Previous Turn">Prev</button>
+                    <button onclick="sendReplayCmd('next')" class="btn-send btn-text" title="Next Turn">Next</button>
+                    <button onclick="sendReplayCmd('rewind')" class="btn-send btn-text" title="Reset to Start">Rewind</button>
+                    <button onclick="sendReplayCmd('play_pause')" id="btn-play-pause" class="btn-send btn-text" title="Start Auto-Play">Play</button>
+                </div>
+            </div>
+
+            <div id="manual-controls-box" class="status-box controls">
+                <h2>Manual Control</h2>
+                <div class="control-group">
+                    <label for="level-select">Select Level:</label>
+                    <select id="level-select"></select>
+                </div>
+
+                <button onclick="manualStartGame()" class="btn-start">▶ Start / Restart</button>
+                <hr class="separator">
+
+                <label for="cmd-input">Command:</label>
+                <div class="input-group">
+                    <input type="text" id="cmd-input" placeholder="e.g.: G4@P21(b=0)+90" 
+                           onkeypress="handleEnter(event)">
+                    <button onclick="manualSubmitMove()" class="btn-send">Send</button>
+                </div>
+                <p id="action-feedback"></p>
+            </div>
+        </div>
+
+        <div class="board-panel">
+            <div id="exit-bay" class="waiting-bay exit-bay"></div>
+
+            <div id="board-grid" class="game-grid"></div>
+
+            <div id="waiting-bay" class="waiting-bay"></div>
+
+            <div class="legend">
+                <p><span class="cyan-dot">●</span> Cyan dot indicates an active base.</p>
+            </div>
+
+            <div class="reasoning-container">
+                <h3 id="reasoning-header">🧠 REASONING</h3>
+                <div id="reasoning-display" class="reasoning-box">
+                    <span class="placeholder-text">Waiting for agent reasonings...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

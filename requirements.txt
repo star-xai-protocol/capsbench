@@ -1,0 +1,6 @@
+google-genai
+requests
+python-dotenv
+tomli
+pyyaml
+flask

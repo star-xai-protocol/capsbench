@@ -1,0 +1,7 @@
+[green]
+name = "Green"
+endpoint = "http://green-agent:9009"
+
+[purple]
+name = "Purple"
+endpoint = "http://purple-agent:80"
