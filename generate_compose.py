@@ -16,22 +16,19 @@ def generate_compose(scenario_path):
         }
     }
 
-   # 1. Configurar GREEN AGENT (Servidor)
+    # 1. Configurar GREEN AGENT (Servidor)
+    # CAMBIO MAGISTRAL: Usamos "build: ." igual que en tu Mac
+    # Así usamos TUS archivos y no la imagen complicada de la nube.
     compose["services"]["green-agent"] = {
-        "image": "ghcr.io/star-xai-protocol/capsbench:latest", 
+        "build": ".", 
         "ports": ["9009:9009"],
-        
-        # TRUCO FINAL: Forzamos el directorio de trabajo donde viven los módulos
-        "working_dir": "/app/src",
-        
-        "entrypoint": ["/bin/sh", "-c"],
-        # Ejecutamos como módulo (-m) llamando al paquete completo (capsbench)
-        "command": ["export PYTHONPATH=/app/src && python -m capsbench.green_agent"],
-        
         "environment": {
             "RECORD_MODE": "true",
-            "PYTHONUNBUFFERED": "1"
+            "PYTHONUNBUFFERED": "1",
+            "PYTHONPATH": "/app/src"
         },
+        # IMPORTANTE: Como usamos tus archivos, el comando simple funciona
+        "command": ["python", "src/green_agent.py"],
         "volumes": [
             "./replays:/app/src/replays",
             "./logs:/app/src/logs",
@@ -46,7 +43,7 @@ def generate_compose(scenario_path):
         },
         "networks": ["agent-network"]
     }
-    
+
     # 2. Configurar PURPLE AGENT (Tu IA)
     compose["services"]["purple-agent"] = {
         "build": ".", 
@@ -88,7 +85,7 @@ def generate_compose(scenario_path):
     with open("docker-compose.yml", "w") as f:
         yaml.dump(compose, f, sort_keys=False)
     
-    print("✅ docker-compose.yml generado correctamente.")
+    print("✅ docker-compose.yml generado (Modo Clon Local).")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
