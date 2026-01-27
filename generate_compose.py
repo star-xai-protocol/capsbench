@@ -16,19 +16,21 @@ def generate_compose(scenario_path):
         }
     }
 
-    # 1. Configurar GREEN AGENT (Servidor)
-    # CAMBIO MAGISTRAL: Usamos "build: ." igual que en tu Mac
-    # Así usamos TUS archivos y no la imagen complicada de la nube.
+    # 1. Configurar GREEN AGENT (Servidor Oficial)
     compose["services"]["green-agent"] = {
-        "build": ".", 
+        # Usamos la imagen oficial (EL PAQUETE SÍ EXISTE EN LA NUBE)
+        "image": "ghcr.io/star-xai-protocol/capsbench:latest", 
         "ports": ["9009:9009"],
+        
+        # --- LIMPIEZA TOTAL ---
+        # NO ponemos 'command' ni 'entrypoint'.
+        # Dejamos que la imagen use su configuración de fábrica (CMD por defecto).
+        
         "environment": {
             "RECORD_MODE": "true",
-            "PYTHONUNBUFFERED": "1",
-            "PYTHONPATH": "/app/src"
+            "PYTHONUNBUFFERED": "1"
+            # Quitamos PYTHONPATH, dejamos que la imagen use el suyo.
         },
-        # IMPORTANTE: Como usamos tus archivos, el comando simple funciona
-        "command": ["python", "src/green_agent.py"],
         "volumes": [
             "./replays:/app/src/replays",
             "./logs:/app/src/logs",
