@@ -20,12 +20,13 @@ def generate_compose(scenario_path):
     compose["services"]["green-agent"] = {
         "image": "ghcr.io/star-xai-protocol/capsbench:latest", 
         "ports": ["9009:9009"],
-        # IMPORTANTE: Forzamos la ejecución como MÓDULO (-m) para arreglar el import error
-        "command": ["python", "-m", "capsbench.green_agent"],
+        # ROMPEMOS EL CANDADO: Usamos entrypoint para tomar control total
+        "entrypoint": ["/bin/sh", "-c"],
+        # AHORA SÍ: Configuramos el path y ejecutamos como módulo en una sola línea
+        "command": ["export PYTHONPATH=/app/src && python -m capsbench.green_agent"],
         "environment": {
             "RECORD_MODE": "true",
-            "PYTHONUNBUFFERED": "1",
-            "PYTHONPATH": "/app/src" # Le dice a Python dónde buscar el módulo
+            "PYTHONUNBUFFERED": "1"
         },
         "volumes": [
             "./replays:/app/src/replays",
