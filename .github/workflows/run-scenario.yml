@@ -44,12 +44,24 @@ jobs:
       - name: Create directories
         run: mkdir -p replays logs results output
 
+      - name: 🧹 LIMPIEZA NUCLEAR DE ARCHIVOS
+        run: |
+          # Borramos cualquier override que pueda estar saboteando
+          rm -f docker-compose.override.yml
+          rm -f docker-compose.override.yaml
+          # Borramos contenedores huérfanos anteriores
+          docker compose down --volumes --remove-orphans || true
+
       # JUGAMOS LA PARTIDA
       - name: Run Game with Docker
         env:
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+        # Usamos -f explícitamente para prohibir que lea nada más
         run: |
-          docker compose up --build
+          docker compose -f docker-compose.yml up --build -d
+          sleep 30
+          docker compose -f docker-compose.yml logs
+          docker compose -f docker-compose.yml down
       # --abort-on-container-exit --exit-code-from agentbeats-client
         
       # GUARDAMOS LOS RESULTADOS (Replays y Logs)
