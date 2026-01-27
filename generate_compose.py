@@ -20,9 +20,9 @@ def generate_compose(scenario_path):
     compose["services"]["green-agent"] = {
         "image": "ghcr.io/star-xai-protocol/capsbench:latest", 
         "ports": ["9009:9009"],
-        "entrypoint": ["/bin/sh", "-c"],
-        # ESTA ES LA RUTA DE LA IMAGEN OFICIAL (Caja Cerrada):
-        "command": ["cd /app/src && export PYTHONPATH=/app/src && python -m capsbench.green_agent"],
+        # BORRAMOS 'entrypoint' y 'command'. 
+        # Dejamos que la imagen arranque con su configuración de fábrica.
+        
         "environment": {
             "RECORD_MODE": "true",
             "PYTHONUNBUFFERED": "1"
