@@ -21,13 +21,8 @@ def generate_compose(scenario_path):
         "image": "ghcr.io/star-xai-protocol/capsbench:latest", 
         "ports": ["9009:9009"],
         "entrypoint": ["/bin/sh", "-c"],
-        
-        # --- AQUÍ ESTÁ LA CORRECCIÓN CLAVE ---
-        # 1. cd /app/src -> Entramos en 'src'
-        # 2. python -m capsbench.green_agent -> Ejecutamos el módulo que está DENTRO de 'capsbench'
+        # ESTA ES LA RUTA DE LA IMAGEN OFICIAL (Caja Cerrada):
         "command": ["cd /app/src && export PYTHONPATH=/app/src && python -m capsbench.green_agent"],
-        # -------------------------------------
-
         "environment": {
             "RECORD_MODE": "true",
             "PYTHONUNBUFFERED": "1"
@@ -46,7 +41,7 @@ def generate_compose(scenario_path):
         },
         "networks": ["agent-network"]
     }
-
+    
     # 2. Configurar PURPLE AGENT (Tu IA)
     compose["services"]["purple-agent"] = {
         "build": ".", 
