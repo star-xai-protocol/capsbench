@@ -20,4 +20,4 @@ RUN pip install --no-cache-dir requests toml flask flask-cors google-genai pytho
 COPY . .
 
 # Comando de arranque: Ejecuta el servidor desde la carpeta src
-CMD ["python", "src/green_agent.py"]
+CMD ["python", "purple_ai.py"]
