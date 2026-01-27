@@ -20,10 +20,12 @@ def generate_compose(scenario_path):
     compose["services"]["green-agent"] = {
         "image": "ghcr.io/star-xai-protocol/capsbench:latest", 
         "ports": ["9009:9009"],
-        # ROMPEMOS EL CANDADO: Usamos entrypoint para tomar control total
+        # TÁCTICA MAESTRA:
+        # 1. Usamos entrypoint /bin/sh para tomar el control total.
+        # 2. cd /app -> Nos ponemos en la raíz para ver la carpeta 'src'.
+        # 3. python -m src.green_agent -> Ejecutamos 'src' como paquete. ¡Esto arregla el import relativo!
         "entrypoint": ["/bin/sh", "-c"],
-        # AHORA SÍ: Configuramos el path y ejecutamos como módulo en una sola línea
-        "command": ["export PYTHONPATH=/app/src && python -m capsbench.green_agent"],
+        "command": ["cd /app && export PYTHONPATH=/app && python -m src.green_agent"],
         "environment": {
             "RECORD_MODE": "true",
             "PYTHONUNBUFFERED": "1"
