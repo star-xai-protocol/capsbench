@@ -20,13 +20,22 @@ def generate_compose(scenario_path):
     compose["services"]["green-agent"] = {
         "image": "ghcr.io/star-xai-protocol/capsbench:latest", 
         "ports": ["9009:9009"],
-        # BORRAMOS 'entrypoint' y 'command'. 
-        # Dejamos que la imagen arranque con su configuración de fábrica.
         
+        # --- SOLUCIÓN BASADA EN TUS LOGS ---
+        # 1. Definimos el directorio de trabajo donde está la carpeta 'capsbench'
+        "working_dir": "/app/src",
+        
+        # 2. Le decimos a Python que busque módulos aquí
         "environment": {
             "RECORD_MODE": "true",
-            "PYTHONUNBUFFERED": "1"
+            "PYTHONUNBUFFERED": "1",
+            "PYTHONPATH": "/app/src" 
         },
+
+        # 3. Ejecutamos como MÓDULO (-m). Esto arregla el error de "relative import".
+        "command": ["python", "-m", "capsbench.green_agent"],
+        # -----------------------------------
+
         "volumes": [
             "./replays:/app/src/replays",
             "./logs:/app/src/logs",
