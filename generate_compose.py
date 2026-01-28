@@ -75,7 +75,8 @@ def generate_compose(scenario_path):
         "entrypoint": ["/bin/sh", "-c"],
         "command": [
             #1. INSTALAMOS LA LIBRERÍA QUE FALTA
-            "pip install httpx && "
+            "pip install httpx && "  # 1. Instalamos httpx
+            "pip install a2a && "    # 2. Instalamos a2a
 
             # 2. CONFIGURAMOS Y EJECUTAMOS
             "echo '[green]' > /tmp/config.toml && "
