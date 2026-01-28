@@ -18,12 +18,15 @@ def generate_compose(scenario_path):
 
     # 1. Configurar GREEN AGENT (Modo Simulación Mac)
     compose["services"]["green-agent"] = {
-        "build": ".",  # <--- LA CLAVE: Usamos tus archivos locales, no la imagen de la nube
+        # FUNCIONA MUY BIEN SIMULANDO EL MAC
+        # "build": ".",  # <--- LA CLAVE: Usamos tus archivos locales, no la imagen de la nube
+        # PARA TRABAJAR CON IMAGE
+        "image": "ghcr.io/star-xai-protocol/capsbench:latest",
         "ports": ["9009:9009"],
         "environment": {
             "RECORD_MODE": "true",
             "PYTHONUNBUFFERED": "1",
-            "PYTHONPATH": "/app" # Asegura que Python encuentre la carpeta src
+            "PYTHONPATH": "/app/src" # Asegura que Python encuentre la carpeta src
         },
         # IMPORTANTE: Como el Dockerfile arranca tu Agente por defecto,
         # aquí forzamos a que arranque el Servidor (Green Agent).
