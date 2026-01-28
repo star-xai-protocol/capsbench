@@ -38,7 +38,7 @@ jobs:
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
         run: |
           docker compose down
-          docker compose up --build --force-recreate
+          docker compose up --build --force-recreate --abort-on-container-exit --exit-code-from agentbeats-client
       # --abort-on-container-exit --exit-code-from agentbeats-client
         
       # GUARDAMOS LOS RESULTADOS (Replays y Logs)
