@@ -74,8 +74,8 @@ def generate_compose(scenario_path):
         # Creamos el config al vuelo para evitar errores de lectura
         "entrypoint": ["/bin/sh", "-c"],
         "command": [
-            1. INSTALAMOS LA LIBRERÍA QUE FALTA
-            "pip install httpx &&
+            #1. INSTALAMOS LA LIBRERÍA QUE FALTA
+            "pip install httpx && "
 
             # 2. CONFIGURAMOS Y EJECUTAMOS
             "echo '[green]' > /tmp/config.toml && "
