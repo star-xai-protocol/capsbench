@@ -67,6 +67,10 @@ def generate_compose(scenario_path):
         "volumes": [
             "./output:/app/output",
         ],
+        # 🔑 ESTA ES LA CLAVE: Le decimos a Python dónde está el código
+        "environment": {
+            "PYTHONPATH": "/app/src"
+        },
         # Creamos el config al vuelo para evitar errores de lectura
         "entrypoint": ["/bin/sh", "-c"],
         "command": [
