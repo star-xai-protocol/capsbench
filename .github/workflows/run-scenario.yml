@@ -56,12 +56,9 @@ jobs:
       - name: Run Game with Docker
         env:
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
-        # Usamos -f explícitamente para prohibir que lea nada más
         run: |
-          docker compose -f docker-compose.yml up --build -d
-          sleep 30
-          docker compose -f docker-compose.yml logs
-          docker compose -f docker-compose.yml down
+          docker compose down
+          docker compose up --build --force-recreate
       # --abort-on-container-exit --exit-code-from agentbeats-client
         
       # GUARDAMOS LOS RESULTADOS (Replays y Logs)
