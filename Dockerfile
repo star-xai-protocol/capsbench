@@ -6,7 +6,8 @@ ENV PYTHONUNBUFFERED=1
 
 # ¡CRUCIAL! Añadimos /app/src al PYTHONPATH
 # Esto permite que Python encuentre tus módulos dentro de 'src'
-ENV PYTHONPATH="${PYTHONPATH}:/app/src"
+# ENV PYTHONPATH="${PYTHONPATH}:/app/src"
+ENV PYTHONPATH="/app/src"
 
 WORKDIR /app
 
