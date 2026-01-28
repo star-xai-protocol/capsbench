@@ -29,36 +29,15 @@ jobs:
       - name: Generate docker-compose.yml
         run: python generate_compose.py --scenario scenario.toml
 
-      # 👇 AÑADE ESTO AQUÍ 👇
-      - name: 🕵️‍♂️ DETECTOR DE MENTIRAS - Ver código real
-        run: |
-          echo "============================================="
-          echo "🔎 CONTENIDO REAL DE generate_compose.py EN GITHUB:"
-          cat generate_compose.py
-          echo "============================================="
-          echo "📝 CONTENIDO GENERADO EN docker-compose.yml:"
-          cat docker-compose.yml
-          echo "============================================="
-      # ☝️ HASTA AQUÍ ☝️
-
       - name: Create directories
         run: mkdir -p replays logs results output
-
-      - name: 🧹 LIMPIEZA NUCLEAR DE ARCHIVOS
-        run: |
-          # Borramos cualquier override que pueda estar saboteando
-          rm -f docker-compose.override.yml
-          rm -f docker-compose.override.yaml
-          # Borramos contenedores huérfanos anteriores
-          docker compose down --volumes --remove-orphans || true
 
       # JUGAMOS LA PARTIDA
       - name: Run Game with Docker
         env:
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
         run: |
-          docker compose down
-          docker compose up --build --force-recreate
+          docker compose up --build
       # --abort-on-container-exit --exit-code-from agentbeats-client
         
       # GUARDAMOS LOS RESULTADOS (Replays y Logs)
