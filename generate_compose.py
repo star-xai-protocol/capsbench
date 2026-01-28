@@ -16,34 +16,33 @@ def generate_compose(scenario_path):
         }
     }
 
-    # 1. Configurar GREEN AGENT (Servidor Oficial)
-    # IMPORTANTE: NO ponemos 'command' ni 'entrypoint'.
-    # Dejamos que la imagen use su configuración de fábrica.
+    # 1. Configurar GREEN AGENT (Servidor)
+    # Usamos la imagen oficial que definiste en la web
     compose["services"]["green-agent"] = {
         "image": "ghcr.io/star-xai-protocol/capsbench:latest", 
         "ports": ["9009:9009"],
         "environment": {
-            "RECORD_MODE": "true",
-            "PYTHONUNBUFFERED": "1"
+            "RECORD_MODE": "true"
         },
         "volumes": [
+            # AQUÍ ESTÁ EL TRUCO: Mapeamos a /app/src/ para que coincida con el servidor
             "./replays:/app/src/replays",
             "./logs:/app/src/logs",
             "./results:/app/src/results"
         ],
         "healthcheck": {
             "test": ["CMD", "curl", "-f", "http://localhost:9009/status"],
-            "interval": "5s",
+            "interval": "2s",
             "timeout": "5s",
             "retries": 20,
-            "start_period": "5s"
+            "start_period": "2s"
         },
         "networks": ["agent-network"]
     }
 
     # 2. Configurar PURPLE AGENT (Tu IA)
     compose["services"]["purple-agent"] = {
-        "build": ".", 
+        "build": ".", # Construye usando tu Dockerfile y requirements.txt
         "command": ["python", "purple_ai.py"], 
         "environment": {
             "SERVER_URL": "http://green-agent:9009",
@@ -61,6 +60,7 @@ def generate_compose(scenario_path):
         "volumes": [
             "./output:/app/output",
         ],
+        # Creamos el config al vuelo para evitar errores de lectura
         "entrypoint": ["/bin/sh", "-c"],
         "command": [
             "echo '[green]' > /tmp/config.toml && "
@@ -78,10 +78,11 @@ def generate_compose(scenario_path):
         "networks": ["agent-network"]
     }
 
+    # Guardar el archivo final
     with open("docker-compose.yml", "w") as f:
         yaml.dump(compose, f, sort_keys=False)
     
-    print("✅ docker-compose.yml generado (LIMPIO - IMAGEN OFICIAL).")
+    print("✅ docker-compose.yml generado correctamente.")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
