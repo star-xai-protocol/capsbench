@@ -61,39 +61,41 @@ def generate_compose(scenario_path):
         "networks": ["agent-network"]
     }
 
-    # 3. Configurar CLIENT (Árbitro)
-    compose["services"]["agentbeats-client"] = {
-        "image": "ghcr.io/agentbeats/agentbeats-client:v1.0.0",
-        "volumes": [
-            "./output:/app/output",
-        ],
-        # 🔑 ESTA ES LA CLAVE: Le decimos a Python dónde está el código
-        "environment": {
-            "PYTHONPATH": "/app/src"
-        },
-        # Creamos el config al vuelo para evitar errores de lectura
-        "entrypoint": ["/bin/sh", "-c"],
-        "command": [
-            #1. INSTALAMOS LA LIBRERÍA QUE FALTA
-            "pip install httpx && "  # 1. Instalamos httpx
-            "pip install a2a && "    # 2. Instalamos a2a
-
-            # 2. CONFIGURAMOS Y EJECUTAMOS
-            "echo '[green]' > /tmp/config.toml && "
-            "echo 'name = \"Green Agent\"' >> /tmp/config.toml && "
-            "echo 'endpoint = \"http://green-agent:9009\"' >> /tmp/config.toml && "
-            "echo '' >> /tmp/config.toml && "
-            "echo '[purple]' >> /tmp/config.toml && "
-            "echo 'name = \"Purple Agent\"' >> /tmp/config.toml && "
-            "echo 'endpoint = \"http://purple-agent:80\"' >> /tmp/config.toml && "
-            "python -m agentbeats.client_cli /tmp/config.toml /app/output/results.json"
-        ],
-        "depends_on": {
-            "green-agent": {"condition": "service_healthy"}
-        },
-        "networks": ["agent-network"]
-    }
-
+    # 3. Configurar CLIENT (Árbitro) -> DESACTIVADO PARA EVITAR ERRORES EN GITHUB
+    # (No es necesario para que tu IA juegue y eliminas el ruido en los logs)
+    
+    # compose["services"]["agentbeats-client"] = {
+    #     "image": "ghcr.io/agentbeats/agentbeats-client:v1.0.0",
+    #     "volumes": [
+    #         "./output:/app/output",
+    #     ],
+    #     # 🔑 ESTA ES LA CLAVE: Le decimos a Python dónde está el código
+    #     "environment": {
+    #         "PYTHONPATH": "/app/src"
+    #     },
+    #     # Creamos el config al vuelo para evitar errores de lectura
+    #     "entrypoint": ["/bin/sh", "-c"],
+    #     "command": [
+    #         #1. INSTALAMOS LA LIBRERÍA QUE FALTA
+    #         "pip install httpx && "  # 1. Instalamos httpx
+    #         "pip install a2a && "    # 2. Instalamos a2a
+    #
+    #         # 2. CONFIGURAMOS Y EJECUTAMOS
+    #         "echo '[green]' > /tmp/config.toml && "
+    #         "echo 'name = \"Green Agent\"' >> /tmp/config.toml && "
+    #         "echo 'endpoint = \"http://green-agent:9009\"' >> /tmp/config.toml && "
+    #         "echo '' >> /tmp/config.toml && "
+    #         "echo '[purple]' >> /tmp/config.toml && "
+    #         "echo 'name = \"Purple Agent\"' >> /tmp/config.toml && "
+    #         "echo 'endpoint = \"http://purple-agent:80\"' >> /tmp/config.toml && "
+    #         "python -m agentbeats.client_cli /tmp/config.toml /app/output/results.json"
+    #     ],
+    #     "depends_on": {
+    #         "green-agent": {"condition": "service_healthy"}
+    #     },
+    #     "networks": ["agent-network"]
+    # }
+    
     # Guardar el archivo final
     with open("docker-compose.yml", "w") as f:
         yaml.dump(compose, f, sort_keys=False)
