@@ -49,7 +49,10 @@ def generate_compose(scenario_path):
 
     # 2. Configurar PURPLE AGENT (Tu IA)
     compose["services"]["purple-agent"] = {
-        "build": ".", # Construye usando tu Dockerfile y requirements.txt
+        # "build": ".", # Construye usando tu Dockerfile y requirements.txt
+        # USAMOS LA IMAGEN NUEVA DEL REPO PURPLE:
+        "image": "ghcr.io/star-xai-protocol/capsbench-purple:latest",
+        
         "command": ["python", "purple_ai.py"], 
         "environment": {
             "SERVER_URL": "http://green-agent:9009",
