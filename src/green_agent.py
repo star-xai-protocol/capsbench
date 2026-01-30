@@ -39,6 +39,8 @@ import re
 from datetime import datetime, timezone
 import json
 import shutil
+import argparse  # <--- Asegúrate de importar esto arriba del todo
+
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
@@ -422,8 +424,21 @@ if __name__ == '__main__':
         print(f"⚠️ WARNING: Could not auto-initialize Level 1 (Maybe files missing?): {e}")
         print("⚠️ The server will start anyway so Docker doesn't crash.")
 
-    # 🚨 EL CAMBIO IMPORTANTE ESTÁ AQUÍ ABAJO 🚨
-    # debug=False: Vital para Docker (evita que el proceso se cierre solo)
-    # use_reloader=False: Asegura que no se creen subprocesos fantasma
-    print("🚀 Starting Server on 0.0.0.0:9009...")
-    app.run(host='0.0.0.0', port=9009, debug=False, use_reloader=False)
+    # ==========================================
+# 🏁 ARRANQUE ROBUSTO (COMPATIBLE CON LEADERBOARD)
+# ==========================================
+if __name__ == '__main__':
+    # 1. Configuramos el parser para leer los argumentos que envía el Leaderboard
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--host", default="0.0.0.0", help="Host IP")
+    parser.add_argument("--port", default=9009, type=int, help="Port")
+    parser.add_argument("--card-url", default="", help="Agent Card URL (Ignored)")
+    
+    # parse_known_args es vital: si el Leaderboard envía basura extra, no crashea
+    args, unknown = parser.parse_known_args()
+
+    print(f"🚀 Green Agent Starting on {args.host}:{args.port}...")
+
+    # 2. Arrancamos el servidor usando los argumentos recibidos
+    # debug=False y use_reloader=False son obligatorios para Docker
+    app.run(host=args.host, port=args.port, debug=False, use_reloader=False)
