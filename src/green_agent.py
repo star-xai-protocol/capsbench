@@ -41,7 +41,8 @@ import json
 import shutil
 import argparse  # <--- Asegúrate de importar esto arriba del todo
 
-from flask import Flask, request, jsonify
+# from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Response, stream_with_context
 from flask_cors import CORS
 
 
@@ -424,7 +425,62 @@ if __name__ == '__main__':
         print(f"⚠️ WARNING: Could not auto-initialize Level 1 (Maybe files missing?): {e}")
         print("⚠️ The server will start anyway so Docker doesn't crash.")
 
-    # ==========================================
+# =============================================================================
+# 🚀 A2A COMPATIBILITY LAYER (AGENTBEATS CLIENT SUPPORT)
+# =============================================================================
+
+@app.route('/.well-known/agent-card.json', methods=['GET'])
+def agent_card():
+    """Returns the Agent Card required by the A2A protocol."""
+    return jsonify({
+        "name": "CapsBench Green Agent",
+        "description": "Legacy Wrapper for CapsBench evaluation",
+        "url": "http://green-agent:9009/", 
+        "version": "1.0.0",
+        "capabilities": {
+            "streaming": True
+        },
+        "defaultInputModes": ["text"],
+        "defaultOutputModes": ["text"],
+        "skills": [
+            {
+                "id": "capsbench_eval",
+                "name": "CapsBench Evaluation",
+                "description": "Handles agent evaluation tasks"
+            }
+        ],
+        "protocolVersion": "0.3.0"
+    })
+
+@app.route('/', methods=['POST', 'GET'])
+def dummy_rpc():
+    """
+    Simulates a JSON-RPC streaming response to keep the AgentBeats client happy.
+    It returns a dummy 'active' task status so the client doesn't disconnect.
+    """
+    def generate():
+        # Structure required by A2A validation schema (Complex Object)
+        response_data = {
+            "jsonrpc": "2.0",
+            "result": {
+                "contextId": "ctx-capsbench",
+                "taskId": "task-capsbench",
+                "status": {"state": "active"}, 
+                "final": False,
+                "artifacts": []
+            },
+            "id": 1
+        }
+        # SSE Format: data: {...}\n\n
+        yield 'data: ' + json.dumps(response_data) + '\n\n'
+
+    return Response(stream_with_context(generate()), mimetype='text/event-stream')
+
+# =============================================================================
+# END A2A COMPATIBILITY
+# =============================================================================
+
+# ==========================================
 # 🏁 ARRANQUE ROBUSTO (COMPATIBLE CON LEADERBOARD)
 # ==========================================
 if __name__ == '__main__':
