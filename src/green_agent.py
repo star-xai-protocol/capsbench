@@ -428,17 +428,16 @@ if __name__ == '__main__':
 # 🏁 ARRANQUE ROBUSTO (COMPATIBLE CON LEADERBOARD)
 # ==========================================
 if __name__ == '__main__':
-    # 1. Configuramos el parser para leer los argumentos que envía el Leaderboard
+    # 🛡️ BLINDAJE: Preparamos el script para aceptar los comandos del Leaderboard
     parser = argparse.ArgumentParser()
     parser.add_argument("--host", default="0.0.0.0", help="Host IP")
     parser.add_argument("--port", default=9009, type=int, help="Port")
-    parser.add_argument("--card-url", default="", help="Agent Card URL (Ignored)")
+    parser.add_argument("--card-url", default="", help="Ignored")
     
-    # parse_known_args es vital: si el Leaderboard envía basura extra, no crashea
+    # parse_known_args es VITAL: ignora basura extra sin romper el script
     args, unknown = parser.parse_known_args()
 
     print(f"🚀 Green Agent Starting on {args.host}:{args.port}...")
 
-    # 2. Arrancamos el servidor usando los argumentos recibidos
-    # debug=False y use_reloader=False son obligatorios para Docker
+    # debug=False y use_reloader=False son OBLIGATORIOS para Docker
     app.run(host=args.host, port=args.port, debug=False, use_reloader=False)
