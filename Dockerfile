@@ -12,7 +12,6 @@ RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 RUN pip install --no-cache-dir requests toml flask flask-cors google-genai python-dotenv gymnasium numpy
 
 # Copy pyproject.toml and source code
-COPY pyproject.toml /app/
 COPY src /app/src
 
 EXPOSE 9009
