@@ -1,30 +1,25 @@
 FROM python:3.11-slim
 
+# Configuración básica para evitar problemas de logs y caché
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONPATH="/app/src"
 
 WORKDIR /app
 
-# Instalamos curl para el healthcheck (como en el ejemplo que pasaste)
+# Instalamos curl para que el Leaderboard pueda comprobar si estamos vivos
 RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 
+# Tus librerías
 RUN pip install --no-cache-dir requests toml flask flask-cors google-genai python-dotenv gymnasium numpy
 
-# Copy pyproject.toml and source code
-COPY src /app/src
+COPY . .
 
 EXPOSE 9009
 
-# HEALTHCHECK (Opcional pero recomendado, copiado del ejemplo que funciona)
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:9009/.well-known/agent-card.json || exit 1
+# 1. ENTRYPOINT: Define QUÉ ejecutamos (siempre python)
+ENTRYPOINT ["python", "src/green_agent.py"]
 
-# EL SECRETO:
-# ENTRYPOINT ejecuta python
-ENTRYPOINT ["python", "-m", "src.green_agent.py"]
-
-# CMD provee los argumentos por defecto.
-# Si el Leaderboard envía los suyos, estos se borran y se usan los del Leaderboard.
-# Como tu script YA tiene argparse (Paso 1), funcionará perfecto en ambos casos.
+# 2. CMD: Define los ARGUMENTOS por defecto.
+# El Leaderboard sustituirá esto con los suyos, pero como tu script ya tiene argparse, funcionará.
 CMD ["--host", "0.0.0.0", "--port", "9009"]
