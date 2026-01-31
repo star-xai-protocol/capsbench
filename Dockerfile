@@ -11,7 +11,9 @@ RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 
 RUN pip install --no-cache-dir requests toml flask flask-cors google-genai python-dotenv gymnasium numpy
 
-COPY . .
+# Copy pyproject.toml and source code
+COPY pyproject.toml /app/
+COPY src /app/src
 
 EXPOSE 9009
 
@@ -21,7 +23,7 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
 
 # EL SECRETO:
 # ENTRYPOINT ejecuta python
-ENTRYPOINT ["python", "src/green_agent.py"]
+ENTRYPOINT ["python", "-m", "src.green_agent.py"]
 
 # CMD provee los argumentos por defecto.
 # Si el Leaderboard envía los suyos, estos se borran y se usan los del Leaderboard.
