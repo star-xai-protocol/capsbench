@@ -446,7 +446,7 @@ def agent_card():
             {
                 "id": "capsbench_eval",
                 "name": "CapsBench Evaluation",
-                "description": "Handles agent evaluation tasks"
+                "description": "Handles agent evaluation tasks",
                 "tags": ["evaluation"]
             }
         ],
