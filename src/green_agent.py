@@ -466,7 +466,7 @@ def dummy_rpc():
             "result": {
                 "contextId": "ctx-capsbench",
                 "taskId": "task-capsbench",
-                "status": {"state": "active"}, 
+                "status": {"state": "working"}, 
                 "final": False,
                 "artifacts": []
             },
