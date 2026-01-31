@@ -31,6 +31,9 @@ FEATURES:
 
 AAA -> Agentified Agent Assessment
 """
+import json
+import time
+import glob
 
 import logging
 import os
@@ -42,7 +45,8 @@ import shutil
 import argparse  # <--- Asegúrate de importar esto arriba del todo
 
 # from flask import Flask, request, jsonify
-from flask import Flask, request, jsonify, Response, stream_with_context
+# from flask import Flask, request, jsonify, Response, stream_with_context
+from flask import Response, stream_with_context, jsonify, request
 from flask_cors import CORS
 
 
@@ -456,24 +460,48 @@ def agent_card():
 @app.route('/', methods=['POST', 'GET'])
 def dummy_rpc():
     """
-    Simulates a JSON-RPC streaming response to keep the AgentBeats client happy.
-    It returns a dummy 'active' task status so the client doesn't disconnect.
+    VIGILANTE INTEGRADO:
+    1. Mantiene la conexión con AgentBeats enviando 'working'.
+    2. Vigila la carpeta 'results/' buscando archivos .json.
+    3. Cuando aparece el resultado, envía 'completed' para que GitHub suba los archivos.
     """
     def generate():
-        # Structure required by A2A validation schema (Complex Object)
-        response_data = {
-            "jsonrpc": "2.0",
-            "result": {
-                "contextId": "ctx-capsbench",
-                "taskId": "task-capsbench",
-                "status": {"state": "working"}, 
-                "final": False,
-                "artifacts": []
-            },
-            "id": 1
-        }
-        # SSE Format: data: {...}\n\n
-        yield 'data: ' + json.dumps(response_data) + '\n\n'
+        print('👁️ VIGILANTE NATIVO ACTIVO: Esperando resultados...')
+        while True:
+            # Buscamos si se ha generado el resultado del juego
+            # NOTA: Ajustamos la ruta para buscar en el directorio actual o src/results
+            results = glob.glob('results/*.json') + glob.glob('src/results/*.json')
+            
+            if results:
+                print(f'🏁 JUEGO TERMINADO. Archivo encontrado: {results[0]}')
+                # Esperamos un poco para asegurar que el disco termine de escribir
+                time.sleep(2)
+                yield 'data: ' + json.dumps({
+                    "jsonrpc": "2.0",
+                    "result": {
+                        "contextId": "ctx-capsbench",
+                        "taskId": "task-capsbench",
+                        "status": {"state": "completed"}, 
+                        "final": True,
+                        "artifacts": []
+                    },
+                    "id": 1
+                }) + '\n\n'
+                break
+            
+            # Si no hay resultados, seguimos "trabajando"
+            yield 'data: ' + json.dumps({
+                "jsonrpc": "2.0",
+                "result": {
+                    "contextId": "ctx-capsbench",
+                    "taskId": "task-capsbench",
+                    "status": {"state": "working"}, 
+                    "final": False,
+                    "artifacts": []
+                },
+                "id": 1
+            }) + '\n\n'
+            time.sleep(2)
 
     return Response(stream_with_context(generate()), mimetype='text/event-stream')
 
