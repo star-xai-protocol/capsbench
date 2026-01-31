@@ -1,11 +1,13 @@
 name: Publish Docker Image 🐳
 
 on:
-  workflow_dispatch:  # Para que puedas darle al botón manualmente
+  workflow_dispatch:  # Botón manual
+  push:               # También se ejecuta al hacer git push (más cómodo)
+    branches: [ "main", "master" ]
 
 env:
   REGISTRY: ghcr.io
-  # Asegúrate de que este nombre coincide con tu repositorio (en minúsculas)
+  # Asegúrate de que este nombre sea correcto
   IMAGE_NAME: star-xai-protocol/capsbench
 
 jobs:
@@ -19,6 +21,14 @@ jobs:
       - name: 📥 Checkout repository
         uses: actions/checkout@v4
 
+      # 👇 NUEVO: Prepara el entorno para compilar multi-arquitectura
+      - name: ⚡ Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      # 👇 NUEVO: Activa Buildx (necesario para el flag platforms)
+      - name: 🔌 Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: 🔐 Log in to the Container registry
         uses: docker/login-action@v3
         with:
@@ -31,7 +41,7 @@ jobs:
         with:
           context: .
           push: true
-          # Esto sobreescribirá la imagen 'latest' con TU código actual
+          # 👇 VITAL: ESTO ES LO QUE ARREGLA EL SILENCIO DE MUERTE
+          platforms: linux/amd64
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-          # Usamos tu Dockerfile local (el que funciona)
           file: ./Dockerfile
