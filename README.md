@@ -18,11 +18,12 @@
 * Using the environment to evaluate, train, or test private AI models for corporate or for-profit purposes.
 
 🏢 **Commercial License:** If you wish to use iXentBench for B2B evaluation, corporate integration, or commercial deployment, please contact us to acquire a license at: [capsicaps.game@gmail.com](mailto:capsicaps.game@gmail.com)
+
 ---
 This repository contains the **Evaluation Environment (Green Agent)** configured to execute and validate the solution from the **Star XAI Protocol** team based on **Google Gemini 2.5 Pro**.
 
 ```
-capsbench-submission/
+iXentBench-submission/
 ├── .github/workflows/      # 🤖 Pipelines de CI/CD (GitHub Actions)
 │
 ├── src/                    # 🟢 JUDGE CODE (Green Agent)
@@ -50,9 +51,9 @@ capsbench-submission/
 └── output/                 # 📝 Temporary execution output
 ```
 ---
-**CapsBench** is an evaluation environment designed to measure **Strategic Reasoning, Long-Term Planning, and Operational Discipline** in AI Agents.
+**iXentBench** is an evaluation environment designed to measure **Strategic Reasoning, Long-Term Planning, and Operational Discipline** in AI Agents.
 
-Unlike generic benchmarks, CapsBench places the agent in a deterministic mechanical environment ("Caps i Caps") with a specific **Anti-Memorization Entropy Layer**. It evaluates whether an AI truly understands the system's physics or if it is simply memorizing solution sequences.
+Unlike generic benchmarks, iXentBench places the agent in a deterministic mechanical environment ("Caps i Caps") with a specific **Anti-Memorization Entropy Layer**. It evaluates whether an AI truly understands the system's physics or if it is simply memorizing solution sequences.
 
 It is a test of **Cognitive Architecture** that evaluates four fundamental dimensions:
 
@@ -82,7 +83,7 @@ The Entropy event, involving the permutation of gears and `b` rotations in the p
 
 CapsBench avoids trivial tasks. Each cognitive dimension has a direct correlation with critical operational capabilities in industrial and software environments:
 
-| CapsBench Dimension | Real Skill Evaluated | Real-World Application (Proxy) |
+| iXentBench Dimension | Real Skill Evaluated | Real-World Application (Proxy) |
 | :--- | :--- | :--- |
 | **Indirect Causality** | **Systems Thinking** | **Supply Chain Management:** Understanding how a delay in a remote node (gear rotation) affects the final delivery (mouse exit) through multiple intermediaries. |
 | **Allocative Efficiency** | **Resource Optimization** | **Cloud Computing & Grid Management:** Allocating expensive computational resources (G4) only to critical processes (Hubs), minimizing operational costs (Score Efficiency). |
@@ -93,7 +94,7 @@ CapsBench avoids trivial tasks. Each cognitive dimension has a direct correlatio
 
 ## 📊 Evaluation Methodology
 
-**CapsBench** evaluates whether an AI can be a "Symbolic Strategist."
+**iXentBench** evaluates whether an AI can be a "Symbolic Strategist."
 
 ### 1. The Efficiency Formula
 We penalize brute force. It is not enough to win; you must win with minimum energy.
