@@ -1,4 +1,4 @@
-Markdown# ⚙️ CapsBench: The Neuro-Symbolic Reasoning Benchmark
+Markdown# ⚙️ iXentBench: The Neuro-Symbolic Reasoning Benchmark
 
 ![Version](https://img.shields.io/badge/version-1.0-green)
 ![Type](https://img.shields.io/badge/Role-Benchmark%20%2F%20Judge-green)
@@ -18,8 +18,7 @@ Markdown# ⚙️ CapsBench: The Neuro-Symbolic Reasoning Benchmark
 * Using the environment to evaluate, train, or test private AI models for corporate or for-profit purposes.
 
 🏢 **Commercial License:** If you wish to use iXentBench for B2B evaluation, corporate integration, or commercial deployment, please contact us to acquire a license at: [capsicaps.game@gmail.com](mailto:capsicaps.game@gmail.com)
-
-```
+ 
 This repository contains the **Evaluation Environment (Green Agent)** configured to execute and validate the solution from the **Star XAI Protocol** team based on **Google Gemini 2.5 Pro**.
 
 ```
