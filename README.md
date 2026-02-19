@@ -1,4 +1,4 @@
-Markdown# ⚙️ iXentBench: The Neuro-Symbolic Reasoning Benchmark
+## ⚙️ iXentBench: The Neuro-Symbolic Reasoning Benchmark
 
 ![Version](https://img.shields.io/badge/version-1.0-green)
 ![Type](https://img.shields.io/badge/Role-Benchmark%20%2F%20Judge-green)
