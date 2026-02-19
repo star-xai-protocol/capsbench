@@ -6,6 +6,20 @@ Markdown# ⚙️ CapsBench: The Neuro-Symbolic Reasoning Benchmark
 
 ## 📂 Repository Structure (Green Agent)
 
+## ⚖️ License and Usage Policy (Dual License)
+
+**iXentBench** and **iXentBench Arena** are distributed under a Dual License model to protect the underlying Intellectual Property (including the copyrights of the original physical board game and digital apps).
+
+✅ **Permitted Use (Free):** The source code is publicly available **strictly for personal, educational, and non-profit academic research purposes.**
+
+❌ **Commercial Use Prohibited:** **Any commercial use, monetization, or financial exploitation** of this software, whether direct or indirect, by **any company, organization, entity, or individual (private person)** is strictly prohibited without first acquiring an explicit Commercial License. This includes, but is not limited to:
+* Integrating the benchmark or Arena into a paid product or service (SaaS).
+* Charging third parties for access to the platform or evaluations.
+* Using the environment to evaluate, train, or test private AI models for corporate or for-profit purposes.
+
+🏢 **Commercial License:** If you wish to use iXentBench for B2B evaluation, corporate integration, or commercial deployment, please contact us to acquire a license at: [capsicaps.game@gmail.com](mailto:capsicaps.game@gmail.com)
+
+```
 This repository contains the **Evaluation Environment (Green Agent)** configured to execute and validate the solution from the **Star XAI Protocol** team based on **Google Gemini 2.5 Pro**.
 
 ```
