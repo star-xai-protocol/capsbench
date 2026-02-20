@@ -21,7 +21,7 @@ def generate_compose(scenario_path):
         # FUNCIONA MUY BIEN SIMULANDO EL MAC
         # "build": ".",  # <--- LA CLAVE: Usamos tus archivos locales, no la imagen de la nube
         # PARA TRABAJAR CON IMAGE
-        "image": "ghcr.io/star-xai-protocol/capsbench:latest",
+        "image": "ghcr.io/star-xai-protocol/ixentbench:latest",
         "ports": ["9009:9009"],
         "environment": {
             "RECORD_MODE": "true",
@@ -51,7 +51,7 @@ def generate_compose(scenario_path):
     compose["services"]["purple-agent"] = {
         # "build": ".", # Construye usando tu Dockerfile y requirements.txt
         # USAMOS LA IMAGEN NUEVA DEL REPO PURPLE:
-        "image": "ghcr.io/star-xai-protocol/capsbench-purple:latest",
+        "image": "ghcr.io/star-xai-protocol/ixentbench-purple:latest",
         
         "command": ["python", "purple_ai.py"], 
         "environment": {
