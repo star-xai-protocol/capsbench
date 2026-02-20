@@ -8,7 +8,7 @@ on:
 env:
   REGISTRY: ghcr.io
   # Asegúrate de que este nombre sea correcto
-  IMAGE_NAME: star-xai-protocol/capsbench
+  IMAGE_NAME: star-xai-protocol/ixentbench
 
 jobs:
   build-and-push:
