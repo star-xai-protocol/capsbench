@@ -7,14 +7,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Pull Image
-        run: docker pull ghcr.io/star-xai-protocol/capsbench:latest
+        run: docker pull ghcr.io/star-xai-protocol/ixentbench:latest
 
       - name: 🔍 REVELAR CONFIGURACIÓN (Entrypoint y CMD)
-        run: docker inspect ghcr.io/star-xai-protocol/capsbench:latest | grep -A 20 "Config"
+        run: docker inspect ghcr.io/star-xai-protocol/ixentbench:latest | grep -A 20 "Config"
 
       - name: 📂 VER ESTRUCTURA DE ARCHIVOS
         # Listamos recursivamente para ver dónde demonios está todo
-        run: docker run --rm --entrypoint /bin/sh ghcr.io/star-xai-protocol/capsbench:latest -c "ls -R /app/src"
+        run: docker run --rm --entrypoint /bin/sh ghcr.io/star-xai-protocol/ixentbench:latest -c "ls -R /app/src"
 
       - name: 🐍 VERIFICAR VERSIÓN Y PATH
-        run: docker run --rm --entrypoint /bin/sh ghcr.io/star-xai-protocol/capsbench:latest -c "python --version && echo $PYTHONPATH"
+        run: docker run --rm --entrypoint /bin/sh ghcr.io/star-xai-protocol/ixentbench:latest -c "python --version && echo $PYTHONPATH"
