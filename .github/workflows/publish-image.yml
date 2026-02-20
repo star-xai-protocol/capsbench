@@ -41,7 +41,8 @@ jobs:
         with:
           context: .
           push: true
-          # 👇 VITAL: ESTO ES LO QUE ARREGLA EL SILENCIO DE MUERTE
+          # 👇 ESTAS DOS LÍNEAS SON EL ESCUDO DEFINITIVO
           platforms: linux/amd64
+          provenance: false
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
           file: ./Dockerfile
