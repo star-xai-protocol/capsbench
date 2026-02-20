@@ -1,4 +1,6 @@
-![iXentBench](ixentbench.png)
+<p align="center">
+  <img src="ixentbench.png" width="500" alt="iXentBench Logo">
+</p>
 ## ⚙️ iXentBench: The Neuro-Symbolic Reasoning Benchmark
 
 ![Version](https://img.shields.io/badge/version-1.0-green)
