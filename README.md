@@ -3,7 +3,7 @@
 ![Version](https://img.shields.io/badge/version-1.0-green)
 ![Type](https://img.shields.io/badge/Role-Benchmark%20%2F%20Judge-green)
 ![Submission](https://img.shields.io/badge/Evaluating-Gemini%202.5%20Pro-purple)
-![alt text](images/ixentbench.png)
+
 ## 📂 Repository Structure (Green Agent)
 
 ## ⚖️ License and Usage Policy (Dual License)
