@@ -51,7 +51,7 @@ from flask_cors import CORS
 
 
 # --- PARCHE DE EMERGENCIA (GPS TOTAL) ---
-# 1. Obtiene la ruta de este archivo (src/capsbench/green_agent.py)
+# 1. Obtiene la ruta de este archivo (src/ixentbench/green_agent.py)
 current_dir = os.path.dirname(os.path.abspath(__file__))
 # 2. Obtiene la ruta padre (src/)
 parent_dir = os.path.dirname(current_dir)
@@ -100,7 +100,7 @@ CORS(app)
 RECORDING_MODE = "--no-record" not in sys.argv
 
 # =============================================================================
-# 📂 FOLDER MANAGEMENT (CAPSBENCH STRUCTURE - ROOT LEVEL)
+# 📂 FOLDER MANAGEMENT (IXENTBENCH STRUCTURE - ROOT LEVEL)
 # =============================================================================
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -116,8 +116,8 @@ for d in [RESULTS_DIR, REPLAYS_DIR, LOG_DIR, RECORD_DIR]:
     if not os.path.exists(d): os.makedirs(d)
 
 # Benchmark Metadata
-BENCHMARK_NAME = "CapsBench-v1.0"
-GREEN_AGENT_VERSION = "capsbench-logic-v1"
+BENCHMARK_NAME = "iXentBench-v1.0"
+GREEN_AGENT_VERSION = "ixentbench-logic-v1"
 
 # Logging Setup
 timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
@@ -164,7 +164,7 @@ def save_benchmark_summary(game_info, replay_filepath, token_usage=None):
         meta = full_state.get("meta", {})
         status = full_state.get("status", {})
 
-        # 4. BUILD LIGHTWEIGHT JSON (CapsBench Schema)
+        # 4. BUILD LIGHTWEIGHT JSON (iXentBench Schema)
         summary_data = {
             "benchmark_version": BENCHMARK_NAME,
             "timestamp": timestamp_iso,
@@ -197,7 +197,7 @@ def save_benchmark_summary(game_info, replay_filepath, token_usage=None):
         with open(summary_path, 'w', encoding='utf-8') as f:
             json.dump(summary_data, f, indent=2)
             
-        logger.info(f"📊 CapsBench Summary generated: {summary_path}")
+        logger.info(f"📊 iXentBench Summary generated: {summary_path}")
         return summary_path
 
     except Exception as e:
@@ -437,8 +437,8 @@ if __name__ == '__main__':
 def agent_card():
     """Returns the Agent Card required by the A2A protocol."""
     return jsonify({
-        "name": "CapsBench Green Agent",
-        "description": "Legacy Wrapper for CapsBench evaluation",
+        "name": "iXentBench Green Agent",
+        "description": "Legacy Wrapper for iXentBench evaluation",
         "url": "http://green-agent:9009/", 
         "version": "1.0.0",
         "capabilities": {
@@ -448,8 +448,8 @@ def agent_card():
         "defaultOutputModes": ["text"],
         "skills": [
             {
-                "id": "capsbench_eval",
-                "name": "CapsBench Evaluation",
+                "id": "ixentbench_eval",
+                "name": "iXentBench Evaluation",
                 "description": "Handles agent evaluation tasks",
                 "tags": ["evaluation"]
             }
@@ -479,8 +479,8 @@ def dummy_rpc():
                 yield 'data: ' + json.dumps({
                     "jsonrpc": "2.0",
                     "result": {
-                        "contextId": "ctx-capsbench",
-                        "taskId": "task-capsbench",
+                        "contextId": "ctx-ixentbench",
+                        "taskId": "task-ixentbench",
                         "status": {"state": "completed"}, 
                         "final": True,
                         "artifacts": []
@@ -493,8 +493,8 @@ def dummy_rpc():
             yield 'data: ' + json.dumps({
                 "jsonrpc": "2.0",
                 "result": {
-                    "contextId": "ctx-capsbench",
-                    "taskId": "task-capsbench",
+                    "contextId": "ctx-ixentbench",
+                    "taskId": "task-ixentbench",
                     "status": {"state": "working"}, 
                     "final": False,
                     "artifacts": []
