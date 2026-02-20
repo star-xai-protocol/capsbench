@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 purple_ai.py
-Reference Agent (Baseline) for CapsBench.
+Reference Agent (Baseline) for iXentBench.
 Engine: Google Gemini (New 'google.genai' SDK)
 """
 
